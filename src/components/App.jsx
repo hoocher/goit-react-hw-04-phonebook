@@ -50,6 +50,7 @@ class App extends Component {
     const alredyHas = this.state.contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
+    console.log('name', name);
     if (alredyHas) {
       return alert(`${name} is alredy in contacts`);
     }
