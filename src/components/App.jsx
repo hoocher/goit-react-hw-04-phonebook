@@ -2,9 +2,7 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import ContactForm from './ContactForm/ContactForm';
 import { ContainerDiv } from './App.styled';
-import { createContext, useEffect, useState } from 'react';
-
-export const PhonebookContext = createContext();
+import { useEffect, useState } from 'react';
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -38,15 +36,13 @@ const App = () => {
   };
 
   return (
-    <PhonebookContext.Provider value={{ filter, setFilter }}>
-      <ContainerDiv>
-        <h1>Phonebook</h1>
-        <ContactForm setContacts={setContacts} contacts={contacts} />
-        <h2>Contacts</h2>
-        <Filter />
-        <ContactList contacts={filteredName()} onClick={deleteContact} />
-      </ContainerDiv>
-    </PhonebookContext.Provider>
+    <ContainerDiv>
+      <h1>Phonebook</h1>
+      <ContactForm setContacts={setContacts} contacts={contacts} />
+      <h2>Contacts</h2>
+      <Filter filter={filter} setFilter={setFilter} />
+      <ContactList contacts={filteredName()} onClick={deleteContact} />
+    </ContainerDiv>
   );
 };
 

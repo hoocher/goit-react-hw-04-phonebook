@@ -1,9 +1,4 @@
-import { useContext } from 'react';
-import { PhonebookContext } from 'components/App';
-
-const Filter = () => {
-  const { filter, setFilter } = useContext(PhonebookContext);
-
+const Filter = ({ filter, setFilter }) => {
   const setFilterValue = ({ target: { name, value } }) => {
     if (name === 'filter') {
       setFilter(value);
