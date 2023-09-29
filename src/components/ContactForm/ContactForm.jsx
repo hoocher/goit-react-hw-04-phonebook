@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { InputDiv } from './ContactForm.styled';
-import { nanoid } from 'nanoid';
 
-const ContactForm = ({ contacts, setContacts }) => {
-  const [ContactName, setContactName] = useState('');
-  const [ContactNumber, setContactNumber] = useState('');
+const ContactForm = ({ addContacts }) => {
+  const [contactName, setContactName] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
 
   const inputChange = ({ target: { name, value } }) => {
     if (name === 'name') {
@@ -15,29 +14,12 @@ const ContactForm = ({ contacts, setContacts }) => {
     }
   };
 
-  const submitForm = e => {
-    e.preventDefault();
-    const alredyHas = contacts.find(
-      contact => contact.name.toLowerCase() === ContactName.toLowerCase()
-    );
-    if (alredyHas) {
-      return alert(`${ContactName} is alredy in contacts`);
-    }
-
-    const cont = {
-      id: nanoid(),
-      name: ContactName,
-      number: ContactNumber,
-    };
-
-    const newContacts = [...contacts, cont];
-    setContacts(newContacts);
-    setContactName('');
-    setContactNumber('');
-  };
-
   return (
-    <form onSubmit={submitForm}>
+    <form
+      onSubmit={() => {
+        addContacts(contactName, contactNumber);
+      }}
+    >
       <InputDiv>
         <span>Name </span>
         <input
@@ -46,7 +28,7 @@ const ContactForm = ({ contacts, setContacts }) => {
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          value={ContactName}
+          value={contactName}
           onChange={inputChange}
         />
       </InputDiv>
@@ -57,7 +39,7 @@ const ContactForm = ({ contacts, setContacts }) => {
           name="number"
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           required
-          value={ContactNumber}
+          value={contactNumber}
           onChange={inputChange}
         />
       </InputDiv>

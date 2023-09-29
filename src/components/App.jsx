@@ -3,17 +3,13 @@ import Filter from './Filter/Filter';
 import ContactForm from './ContactForm/ContactForm';
 import { ContainerDiv } from './App.styled';
 import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    const localContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (localContacts) {
-      setContacts(localContacts);
-    }
-  }, []);
 
   useEffect(() => {
     if (contacts.length) {
@@ -30,6 +26,24 @@ const App = () => {
     );
   };
 
+  const addContact = (contactName, contactNumber) => {
+    const alredyHas = contacts.find(
+      contact => contact.name.toLowerCase() === contactName.toLowerCase()
+    );
+    if (alredyHas) {
+      return alert(`${contactName} is alredy in contacts`);
+    }
+
+    const cont = {
+      id: nanoid(),
+      name: contactName,
+      number: contactNumber,
+    };
+
+    const newContacts = [...contacts, cont];
+    setContacts(newContacts);
+  };
+
   const deleteContact = id => {
     const newContacts = contacts.filter(contact => contact.id !== id);
     setContacts(newContacts);
@@ -38,7 +52,7 @@ const App = () => {
   return (
     <ContainerDiv>
       <h1>Phonebook</h1>
-      <ContactForm setContacts={setContacts} contacts={contacts} />
+      <ContactForm addContacts={addContact} />
       <h2>Contacts</h2>
       <Filter filter={filter} setFilter={setFilter} />
       <ContactList contacts={filteredName()} onClick={deleteContact} />
